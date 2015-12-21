@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cerulean/bootstrap.min.css">-->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+</head>
+<body ng-controller="loginController as logCtrl">
+
+
+<section>
+    <div class="container" style="padding : 50px;">
+        <div class="col-md-4 col-md-offset-4">
+        <form method="post" class="form-horizontal" name="loginForm" ng-submit="logCtrl.sendForm(loginForm.$invalid);" ng-if="!logCtrl.formSent" novalidate>
+        <!--<form method="post" class="form-horizontal" name="loginForm" ng-submit="logCtrl.sendForm();" ng-if="true" novalidate>-->
+            <fieldset>
+                <!-- POLE EMAIL -->
+                <div ng-class="{ 'has-error' : loginForm.email.$touched && loginForm.email.$invalid }">
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" id="email"
+                               ng-model="logCtrl.form.email" placeholder="Adres email"
+                               required />
+                    </div>
+
+                    <div ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched" class="row help-block">
+                        <div ng-messages-include="./templates/emailValidation.html" ></div>
+                    </div>
+                </div>
+
+                <!-- POLE PASSWORD-->
+                <div ng-class="{ 'has-error' : loginForm.password.$touched && loginForm.password.$invalid }">
+                    <div class="form-group input-group">
+                        <input type="password" class="form-control" name="password"
+                               id="password" ng-model="logCtrl.form.password" placeholder="Hasło"
+                               required
+                               ng-minlength="6"
+                               ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/" />
+                        <span class="input-group-addon" title="Hasło musi zawierać co najmniej 6 znaków, dużą oraz małą literę."><i class="fa fa-info-circle"></i></span>
+                    </div>
+
+                    <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" class="row help-block">
+                        <div ng-messages-include="./templates/passwordValidation.html"></div>
+                    </div>
+                </div>
+
+            <input class="btn btn-lg btn-success btn-block" type="submit" value="zaloguj" ng-disabled="loginForm.$invalid">
+            </fieldset>
+        </form>
+        </div>
+    </div>
+
+    <!-- INFORMACJA O ZALOGOWANIU / BŁĘDZIE PO WYSŁANIU FORMULARZA -->
+    <div class="container" ng-if="logCtrl.formSent">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-block" ng-class="{'alert-danger': logCtrl.respErr, 'alert-success' : !logCtrl.respErr}">
+                <h4 class="alert-heading" ng-show="!logCtrl.respErr">Gratulacje!</h4>
+                <h4 class="alert-heading" ng-show="logCtrl.respErr">Wystąpił błąd!</h4>
+                {{logCtrl.respMessage}}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
+<script type="text/javascript" src="./node_modules/angular-messages/angular-messages.min.js"></script>
+<script type="text/javascript" src="./js/loginController.js"></script>
+<script type="text/javascript" src="./js/loginService.js"></script>
+</body>
+</html>
